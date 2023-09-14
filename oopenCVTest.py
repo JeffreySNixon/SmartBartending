@@ -1,4 +1,8 @@
 import cv2
+import face_recognition
+
+image = face_recognition.load_image_file("your_file.jpg")
+face_locations = face_recognition.face_locations(image)
 
 face_classifier = cv2.CascadeClassifier(
     cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
