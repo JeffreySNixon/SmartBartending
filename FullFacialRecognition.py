@@ -1,6 +1,8 @@
 import face_recognition
 import cv2
 import numpy as np
+import Juice
+import encodingFaces
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
@@ -14,23 +16,9 @@ import numpy as np
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
-# Load a sample picture and learn how to recognize it.
-obama_image = face_recognition.load_image_file("obama.jpg")
-obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
+known_face_encodings = encodingFaces.encodeFaces()
 
-# Load a second sample picture and learn how to recognize it.
-biden_image = face_recognition.load_image_file("biden.jpg")
-biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
-
-# Create arrays of known face encodings and their names
-known_face_encodings = [
-    obama_face_encoding,
-    biden_face_encoding
-]
-known_face_names = [
-    "Barack Obama",
-    "Joe Biden"
-]
+known_face_names = encodingFaces.knownFace()
 
 # Initialize some variables
 face_locations = []
@@ -70,7 +58,7 @@ while True:
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
                 name = known_face_names[best_match_index]
-                print("Success!!")
+                Juice.success(name)
 
             face_names.append(name)
 
