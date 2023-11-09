@@ -8,10 +8,32 @@ import pickle
 import cv2
 import os
 
+
+from zipfile import ZipFile
+import os
+from imutils import paths
+import boto3
+import zipfile
+
+obj = boto3.client("s3")
+
+obj.download_file(
+    Filename="SmartBartending/facial_recognition/dataset.zip",	# directory + name where to download .zip
+    Bucket="smartbartending-faces",				# desired s3 bucket
+    Key="dataset.zip"					# name assigned to .zip in the s3 bucket
+)
+with ZipFile('SmartBartending/facial_recognition/dataset.zip') as zObject: 
+  
+    # Extracting all the members of the zip  
+    # into a specific location. 
+        zObject.extractall( 
+        path='SmartBartending/facial_recognition/dataset/') 
+
+
 # our images are located in the dataset folder
 print("[INFO] start processing faces...")
-imagePaths = list(paths.list_images('facial_recognition/dataset'))
-print(list(paths.list_images('facial_recognition/dataset')))
+imagePaths = list(paths.list_images('SmartBartending/facial_recognition/dataset'))
+#print(list(paths.list_images('facial_recognition/dataset')))
 # initialize the list of known encodings and known names
 knownEncodings = []
 knownNames = []
@@ -49,3 +71,4 @@ data = {"encodings": knownEncodings, "names": knownNames}
 f = open("encodings.pickle", "wb")
 f.write(pickle.dumps(data))
 f.close()
+
